@@ -11,4 +11,4 @@ if (location.pathname === "/welcome") {
     elem = <Homepage />;
 }
 
-ReactDOM.render(<Welcome />, document.querySelector("main"));
+ReactDOM.render(elem, document.querySelector("main"));

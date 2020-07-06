@@ -17,40 +17,54 @@ export default class Login extends React.Component {
         });
     }
     handleSubmit() {
-        // axios
-        //     .post("/signup", { ...this.state })
-        //     .then((res) => {
-        //         if (res.status === 201) {
-        //             this.setState({ error: undefined });
-        //             return location.replace("/");
-        //         } else {
-        //             return this.setState({
-        //                 error: "Oops, something went wrong",
-        //             });
-        //         }
-        //     })
-        //     .catch(() =>
-        //         this.setState({ error: "Oops, something went wrong" })
-        //     );
+        console.log("handleSubmit Login axios sent");
+
+        axios
+            .post("/login", { ...this.state })
+            .then(() => {
+                this.setState({ error: undefined });
+                return location.replace("/");
+            })
+            .catch((err) => {
+                if (err.response.status === 404) {
+                    return this.setState({
+                        error:
+                            "The user and/or password you've entered is not correct. Please check and resubmit your credentials.",
+                    });
+                } else {
+                    return this.setState({
+                        error: "Oops, something went wrong",
+                    });
+                }
+            });
     }
     render() {
         return (
             <div className="login">
-                {this.error && <p>{this.error}</p>}
+                {this.state.error && (
+                    <p className="error">{this.state.error}</p>
+                )}
                 <input
                     name="email"
                     type="email"
+                    placeholder="Email"
                     onChange={(e) => this.handleChange(e)}
+                    required
                 />
                 <input
                     name="password"
                     type="password"
+                    placeholder="Password"
                     onChange={(e) => this.handleChange(e)}
+                    required
                 />
-                <button onClick={this.handleSubmit}>Register</button>
+                <button onClick={() => this.handleSubmit()}>Log In</button>
                 <p>
-                    Not yet a member?
-                    <Link to="/signup">Sign Up</Link>
+                    Not yet a member? <Link to="/">Sign Up</Link>
+                </p>
+                <p>
+                    Forgot your password?{" "}
+                    <Link to="/reset">Reset your password</Link>
                 </p>
             </div>
         );

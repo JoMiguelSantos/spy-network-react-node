@@ -1,7 +1,8 @@
 import React from "react";
 import Registration from "./Registration";
 import Login from "./Login";
-import { HashRouter, Route, Link } from "react-router-dom";
+import ResetPassword from "./ResetPassword";
+import { HashRouter, Route } from "react-router-dom";
 
 const Welcome = () => {
     return (
@@ -17,6 +18,7 @@ const Welcome = () => {
                 <React.Fragment>
                     <Route exact path="/" component={Registration} />
                     <Route path="/login" component={Login} />
+                    <Route path="/reset" component={ResetPassword} />
                 </React.Fragment>
             </HashRouter>
         </>

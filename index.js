@@ -4,6 +4,9 @@ const compression = require("compression");
 const csurf = require("csurf");
 const cookieSession = require("cookie-session");
 const helmet = require("helmet");
+const cryptoRandomString = require("crypto-random-string");
+const { sendEmail } = require("./ses");
+
 const { hashPassword, comparePassword } = require("./bc");
 const db = require("./db");
 
@@ -60,14 +63,15 @@ app.post("/login", (req, res) => {
                         req.session.userId = data.rows[0].id;
                         req.session.first = data.rows[0].first;
                         req.session.last = data.rows[0].last;
+                        req.session.email = data.rows[0].email;
                         return res.sendStatus(200);
                     } else {
                         return res.sendStatus(401);
                     }
                 })
-                .catch((err) => res.send(err));
+                .catch((err) => res.status(500).send(err));
         } else {
-            return res.redirect("/auth/login?err=true");
+            return res.sendStatus(404);
         }
     });
 });
@@ -78,23 +82,76 @@ app.post("/logout", (req, res) => {
 });
 
 app.post("/signup", (req, res) => {
-    console.log("/signup", req.body);
     hashPassword(req.body.password).then((hashedPw) => {
-        console.log("/signup hash", hashedPw);
         return db
             .createUser({ ...req.body, password: hashedPw })
             .then((data) => {
-                console.log("/signup db", data);
-
                 req.session.userId = data.rows[0].id;
                 req.session.first = data.rows[0].first;
                 req.session.last = data.rows[0].last;
+                req.session.email = data.rows[0].email;
                 return res.sendStatus(201);
             })
             .catch((err) => {
-                return res.send(err);
+                return res.send(500).send(err);
             });
     });
+});
+
+app.post("/password/reset/start", (req, res) => {
+    const { email } = req.body;
+    console.log("/password/reset/start", email);
+
+    return db.readUser({ email }).then((data) => {
+        console.log("readUser", data.rowCount);
+
+        if (data.rowCount > 0) {
+            const secretCode = cryptoRandomString({
+                length: 6,
+            });
+            return db
+                .createToken({ email, code: secretCode })
+                .then(() => {
+                    sendEmail(
+                        email,
+                        "Reset Password",
+                        `Hey, psst! 
+                    Here's your very secret reset password code: ${secretCode}`
+                    );
+                })
+                .catch(() => {
+                    return res.sendStatus(500);
+                });
+        } else {
+            return res.sendStatus(404);
+        }
+    });
+});
+
+app.post("/password/reset/verify", (req, res) => {
+    const { email, code, password } = req.body;
+    const { first, last } = req.session;
+    return db
+        .readToken({ code })
+        .then((data) => {
+            if (data.rowCount > 0) {
+                db.updateUser({
+                    first,
+                    last,
+                    email,
+                    password,
+                })
+                    .then((res) => {
+                        return res.sendStatus(200);
+                    })
+                    .catch(() => {
+                        return res.sendStatus(500);
+                    });
+            }
+        })
+        .catch(() => {
+            res.sendStatus(404);
+        });
 });
 
 app.get("*", function (req, res) {

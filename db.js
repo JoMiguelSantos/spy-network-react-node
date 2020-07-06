@@ -11,7 +11,7 @@ if (process.env.DATABASE_URL) {
 }
 
 exports.createUser = ({ first, last, email, password }) => {
-    const query = `INSERT INTO users ("first", "last", email, password) 
+    const query = `INSERT INTO users (first, last, email, password) 
                    VALUES ($1, $2, $3, $4) RETURNING *;`;
     return db.query(query, [first, last, email, password]);
 };
@@ -21,15 +21,14 @@ exports.readUser = ({ email, id }) => {
     return db.query(query, [email || id]);
 };
 
-exports.updateUser = ({ first, last, email, password, id }) => {
-    const query = `INSERT INTO users (first, last, email, password, id) 
-                       VALUES ($1, $2, $3, $4, $5)
-                       ON CONFLICT (id)
-                       DO UPDATE SET first = $1, 
-                                     last = $2, 
-                                     email = $3
-                                     ${password ? ",password = $4" : ""};`;
-    return db.query(query, [first, last, email, password || "", id]);
+exports.updateUser = ({ first, last, email, password }) => {
+    const query = `UPDATE users (first, last, email, password, id) 
+                   SET first = $1, 
+                        last = $2, 
+                        email = $3
+                        ${password ? ",password = $4" : ""}
+                   WHERE email = $3;`;
+    return db.query(query, [first, last, email, password || ""]);
 };
 
 exports.deleteUser = ({ id }) => {
@@ -72,4 +71,22 @@ exports.deleteTestUser = () => {
                   DELETE FROM users WHERE id = ${id};`);
         })
         .catch(() => console.log("all good test user didn't exist"));
+};
+
+exports.createToken = ({ email, code }) => {
+    const query = `INSERT INTO reset_codes (email, code) 
+                   VALUES ($1, $2) RETURNING *;`;
+    return db.query(query, [email, code]);
+};
+
+exports.readToken = ({ code }) => {
+    const query = `SELECT * 
+                  FROM reset_codes 
+                  WHERE code = $1 AND CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes';`;
+    return db.query(query, [code]);
+};
+
+exports.deleteToken = ({ id }) => {
+    const query = `DELETE FROM reset_codes WHERE id = $1`;
+    return db.query(query, [id]);
 };
