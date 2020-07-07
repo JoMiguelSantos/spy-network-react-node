@@ -38,6 +38,14 @@ exports.updatePassword = ({ email, password }) => {
     return db.query(query, [email, password]);
 };
 
+exports.updateImage = ({ id, image }) => {
+    const query = `UPDATE users
+                   SET image = $2
+                   WHERE id = $1
+                   RETURNING image;`;
+    return db.query(query, [id, image]);
+};
+
 exports.deleteUser = ({ id }) => {
     const query = `DELETE FROM users WHERE id = $1`;
     return db.query(query, [id]);

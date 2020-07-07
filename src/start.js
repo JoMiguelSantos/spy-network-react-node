@@ -1,14 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Welcome from "./components/Welcome";
-import Homepage from "./components/Homepage";
+import App from "./components/App";
 
 let elem;
 
 if (location.pathname === "/welcome") {
     elem = <Welcome />;
 } else {
-    elem = <Homepage />;
+    elem = <App />;
 }
 
 ReactDOM.render(elem, document.querySelector("main"));

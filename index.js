@@ -6,6 +6,9 @@ const cookieSession = require("cookie-session");
 const helmet = require("helmet");
 const cryptoRandomString = require("crypto-random-string");
 const { sendEmail } = require("./ses");
+const { uploadFileS3 } = require("./s3");
+const { uploader } = require("./multer");
+const { s3Url } = require("./config.json");
 
 const { hashPassword, comparePassword } = require("./bc");
 const db = require("./db");
@@ -112,7 +115,8 @@ app.post("/password/reset/start", (req, res) => {
                         email,
                         "Reset Password",
                         `Hey, psst! 
-                    Here's your very secret reset password code: ${secretCode}`
+
+Here's your very secret reset password code: ${secretCode}`
                     );
                     return res.sendStatus(200);
                 })
@@ -146,6 +150,35 @@ app.post("/password/reset/verify", async (req, res) => {
         }
     } catch (err) {
         res.sendStatus(404);
+    }
+});
+
+app.get("/user", async (req, res) => {
+    try {
+        let data = await db.readUser({ id: req.session.userId });
+        if (data.rowCount > 0) {
+            let user = data.rows[0];
+            delete user.password;
+            res.json({ success: true, user });
+        } else {
+            res.sendStatus(404);
+        }
+    } catch (err) {
+        res.sendStatus(500);
+    }
+});
+
+app.post("/upload", uploader.single("image"), uploadFileS3, (req, res) => {
+    if (req.file) {
+        const { filename } = req.file;
+        const image = s3Url + filename;
+        return db
+            .updateImage({ id: req.session.userId, image })
+            .then(({ rows }) => {
+                return res.json(rows[0]);
+            });
+    } else {
+        return res.sendStatus(400);
     }
 });
 

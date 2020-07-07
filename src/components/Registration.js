@@ -21,7 +21,7 @@ export default class Registration extends React.Component {
     handleSubmit() {
         axios
             .post("/signup", { ...this.state })
-            .then((res) => {
+            .then(() => {
                 this.setState({ error: undefined });
                 return location.replace("/");
             })
