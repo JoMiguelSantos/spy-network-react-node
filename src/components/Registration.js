@@ -19,8 +19,6 @@ export default class Registration extends React.Component {
         });
     }
     handleSubmit() {
-        console.log("handleSubmit");
-
         axios
             .post("/signup", { ...this.state })
             .then((res) => {

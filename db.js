@@ -22,13 +22,20 @@ exports.readUser = ({ email, id }) => {
 };
 
 exports.updateUser = ({ first, last, email, password }) => {
-    const query = `UPDATE users (first, last, email, password, id) 
+    const query = `UPDATE users
                    SET first = $1, 
                         last = $2, 
                         email = $3
                         ${password ? ",password = $4" : ""}
                    WHERE email = $3;`;
     return db.query(query, [first, last, email, password || ""]);
+};
+
+exports.updatePassword = ({ email, password }) => {
+    const query = `UPDATE users
+                   SET password = $2
+                   WHERE email = $1;`;
+    return db.query(query, [email, password]);
 };
 
 exports.deleteUser = ({ id }) => {

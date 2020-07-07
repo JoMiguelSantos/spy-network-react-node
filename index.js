@@ -100,11 +100,7 @@ app.post("/signup", (req, res) => {
 
 app.post("/password/reset/start", (req, res) => {
     const { email } = req.body;
-    console.log("/password/reset/start", email);
-
     return db.readUser({ email }).then((data) => {
-        console.log("readUser", data.rowCount);
-
         if (data.rowCount > 0) {
             const secretCode = cryptoRandomString({
                 length: 6,
@@ -118,6 +114,7 @@ app.post("/password/reset/start", (req, res) => {
                         `Hey, psst! 
                     Here's your very secret reset password code: ${secretCode}`
                     );
+                    return res.sendStatus(200);
                 })
                 .catch(() => {
                     return res.sendStatus(500);
@@ -128,30 +125,28 @@ app.post("/password/reset/start", (req, res) => {
     });
 });
 
-app.post("/password/reset/verify", (req, res) => {
+app.post("/password/reset/verify", async (req, res) => {
     const { email, code, password } = req.body;
-    const { first, last } = req.session;
-    return db
-        .readToken({ code })
-        .then((data) => {
-            if (data.rowCount > 0) {
-                db.updateUser({
-                    first,
-                    last,
-                    email,
-                    password,
+
+    try {
+        const data = await db.readToken({ code });
+
+        if (data.rowCount > 0) {
+            const newPassword = await hashPassword(password);
+            db.updatePassword({
+                email,
+                password: newPassword,
+            })
+                .then(() => {
+                    return res.sendStatus(200);
                 })
-                    .then((res) => {
-                        return res.sendStatus(200);
-                    })
-                    .catch(() => {
-                        return res.sendStatus(500);
-                    });
-            }
-        })
-        .catch(() => {
-            res.sendStatus(404);
-        });
+                .catch(() => {
+                    return res.sendStatus(500);
+                });
+        }
+    } catch (err) {
+        res.sendStatus(404);
+    }
 });
 
 app.get("*", function (req, res) {

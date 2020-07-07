@@ -17,8 +17,6 @@ export default class Login extends React.Component {
         });
     }
     handleSubmit() {
-        console.log("handleSubmit Login axios sent");
-
         axios
             .post("/login", { ...this.state })
             .then(() => {

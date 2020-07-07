@@ -21,8 +21,6 @@ export default class ResetPassword extends React.Component {
         });
     }
     handleSubmit() {
-        console.log("handleSubmit resetPw", this.state);
-
         if (this.state.submitEmail) {
             return axios
                 .post("/password/reset/start", { email: this.state.email })
@@ -98,7 +96,7 @@ export default class ResetPassword extends React.Component {
                 )}
                 {this.state.success ? (
                     <h3>
-                        Password Updated. Please <Link to="/">Log In</Link>
+                        Password Updated. Please <Link to="/login">Log In</Link>
                     </h3>
                 ) : (
                     <button onClick={() => this.handleSubmit()}>Submit</button>
@@ -106,19 +104,7 @@ export default class ResetPassword extends React.Component {
                 <p>
                     Not yet a member? <Link to="/">Sign Up</Link>
                 </p>
-                <p>
-                    Forgot your password?{" "}
-                    <Link to="/reset">Reset your password</Link>
-                </p>
             </div>
         );
     }
 }
-
-// 1st Display - shows 1st form field for email and submit button
-
-// 2nd Display - shows 2nd form where they can enter the code they received, new password, and a button
-
-// 3rd Display - last rendering that shows success!!!
-
-// component should have event handlers to collect values from form fields and to detect clicks on buttons
