@@ -4,6 +4,7 @@ import axios from "../../axios";
 import Uploader from "./Uploader";
 import Logo from "./Logo";
 import Profile from "./Profile";
+import ProfilePic from "./Profile/ProfilePic";
 
 export default class App extends React.Component {
     constructor() {
@@ -46,17 +47,28 @@ export default class App extends React.Component {
 
     render() {
         return (
-            <div>
-                <Logo />
-                <Profile
-                    first={this.state.first}
-                    last={this.state.last}
-                    image={this.state.image}
-                    bio={this.state.bio}
-                    toggleModal={this.toggleModal}
-                    setBio={(newBio) => this.setBio(newBio)}
-                />
-                <p onClick={this.toggleModal}>Update Profile Image</p>
+            <div className="app__container">
+                <header>
+                    <Logo />
+                    <ProfilePic
+                        first={this.state.first}
+                        last={this.state.last}
+                        image={this.state.image}
+                        toggleModal={this.toggleModal}
+                        size="small"
+                    />
+                </header>
+                {!this.state.uploaderIsVisible && (
+                    <Profile
+                        first={this.state.first}
+                        last={this.state.last}
+                        image={this.state.image}
+                        bio={this.state.bio}
+                        toggleModal={this.toggleModal}
+                        setBio={(newBio) => this.setBio(newBio)}
+                        picSize="medium"
+                    />
+                )}
                 {this.state.uploaderIsVisible && (
                     <Uploader
                         setImage={() => this.setImage()}

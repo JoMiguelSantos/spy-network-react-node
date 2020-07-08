@@ -51,14 +51,19 @@ export default class Uploader extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="uploader__container">
                 <h2>Want to change your profile image?</h2>
-                <p onClick={() => this.props.closeModal()}>X</p>
                 {this.state.error && (
                     <p className="error">{this.state.error}</p>
                 )}
+                <p
+                    className="uploader__back-btn"
+                    onClick={() => this.props.closeModal()}
+                >
+                    Back to Bio
+                </p>
                 <div>
-                    <label className="input__file--label" htmlFor="file">
+                    <label className="uploader__input--label" htmlFor="file">
                         {this.state.imageUpload || "UPLOAD"}
                     </label>
                     <input
@@ -72,7 +77,12 @@ export default class Uploader extends React.Component {
                     />
                 </div>
                 {this.state.submit && (
-                    <button onClick={() => this.handleSubmit()}>Update</button>
+                    <button
+                        className="uploader__input--submit-btn"
+                        onClick={() => this.handleSubmit()}
+                    >
+                        Update
+                    </button>
                 )}
                 {this.state.success && (
                     <p>Your image has been updated successfully.</p>

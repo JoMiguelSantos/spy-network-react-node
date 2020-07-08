@@ -45,10 +45,10 @@ export default class BioEditor extends React.Component {
     render() {
         return (
             <div>
-                <p>{this.props.bio}</p>
+                <p className="profile__bio--text">{this.props.bio}</p>
                 {!this.state.isVisible && (
                     <p
-                        className="profile__bio--change"
+                        className="profile__bio--change-btn"
                         onClick={() => this.handleClick()}
                     >
                         {this.props.bio ? "Edit Bio" : "Add Bio"}
@@ -58,19 +58,23 @@ export default class BioEditor extends React.Component {
                     <p className="error">{this.state.error}</p>
                 )}
                 {this.state.isVisible && (
-                    <div>
+                    <div className="profile__bio--update">
                         <textarea
+                            className="profile__bio--textarea"
                             onChange={(e) => this.handleChange(e)}
-                            cols="50"
-                            rows="30"
+                            cols="40"
+                            rows="10"
+                            value={this.state.draftBio || this.props.bio}
                             required
                         />
-                        <button onClick={() => this.handleSubmit()}>
-                            Save
-                        </button>
-                        <button onClick={() => this.handleClick()}>
-                            Cancel
-                        </button>
+                        <div className="profile__bio--update-btns">
+                            <button onClick={() => this.handleSubmit()}>
+                                Save
+                            </button>
+                            <button onClick={() => this.handleClick()}>
+                                Cancel
+                            </button>
+                        </div>
                     </div>
                 )}
             </div>
