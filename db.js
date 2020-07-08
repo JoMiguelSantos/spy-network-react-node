@@ -46,6 +46,14 @@ exports.updateImage = ({ id, image }) => {
     return db.query(query, [id, image]);
 };
 
+exports.updateBio = ({ id, bio }) => {
+    const query = `UPDATE users
+                   SET bio = $2
+                   WHERE id = $1
+                   RETURNING bio;`;
+    return db.query(query, [id, bio]);
+};
+
 exports.deleteUser = ({ id }) => {
     const query = `DELETE FROM users WHERE id = $1`;
     return db.query(query, [id]);

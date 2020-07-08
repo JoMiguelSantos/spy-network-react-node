@@ -16,3 +16,6 @@ CREATE TABLE reset_codes(
 
 ALTER TABLE users
 ADD COLUMN image TEXT;
+
+ALTER TABLE users
+ADD COLUMN bio TEXT;

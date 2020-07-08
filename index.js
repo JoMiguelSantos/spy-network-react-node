@@ -182,6 +182,23 @@ app.post("/upload", uploader.single("image"), uploadFileS3, (req, res) => {
     }
 });
 
+app.post("/bio", async (req, res) => {
+    try {
+        let data = await db.updateBio({
+            id: req.session.userId,
+            bio: req.body.bio,
+        });
+        if (data.rowCount > 0) {
+            const user = data.rows[0];
+            res.json({ success: true, user });
+        } else {
+            res.sendStatus(404);
+        }
+    } catch (err) {
+        res.sendStatus(500);
+    }
+});
+
 app.get("*", function (req, res) {
     if (!req.session.userId) {
         res.redirect("/welcome");

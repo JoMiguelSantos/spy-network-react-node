@@ -1,9 +1,9 @@
 import React from "react";
 import axios from "../../axios";
 
-import ProfilePic from "./ProfilePic";
 import Uploader from "./Uploader";
 import Logo from "./Logo";
+import Profile from "./Profile";
 
 export default class App extends React.Component {
     constructor() {
@@ -13,14 +13,15 @@ export default class App extends React.Component {
             image: "",
             first: "",
             last: "",
+            bio: "",
         };
         this.toggleModal = this.toggleModal.bind(this);
     }
 
     componentDidMount() {
         axios.get("/user").then((res) => {
-            const { image, first, last } = res.data.user;
-            this.setState({ image, first, last });
+            const { image, first, last, bio } = res.data.user;
+            this.setState({ image, first, last, bio });
         });
     }
 
@@ -37,15 +38,23 @@ export default class App extends React.Component {
         });
     }
 
+    setBio(newBio) {
+        this.setState({
+            bio: newBio,
+        });
+    }
+
     render() {
         return (
             <div>
                 <Logo />
-                <ProfilePic
+                <Profile
                     first={this.state.first}
                     last={this.state.last}
                     image={this.state.image}
+                    bio={this.state.bio}
                     toggleModal={this.toggleModal}
+                    setBio={(newBio) => this.setBio(newBio)}
                 />
                 <p onClick={this.toggleModal}>Update Profile Image</p>
                 {this.state.uploaderIsVisible && (
