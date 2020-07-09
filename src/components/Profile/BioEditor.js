@@ -68,10 +68,16 @@ export default class BioEditor extends React.Component {
                             required
                         />
                         <div className="profile__bio--update-btns">
-                            <button onClick={() => this.handleSubmit()}>
+                            <button
+                                className="btn"
+                                onClick={() => this.handleSubmit()}
+                            >
                                 Save
                             </button>
-                            <button onClick={() => this.handleClick()}>
+                            <button
+                                className="btn"
+                                onClick={() => this.handleClick()}
+                            >
                                 Cancel
                             </button>
                         </div>

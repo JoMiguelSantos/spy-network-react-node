@@ -38,33 +38,37 @@ export default class Login extends React.Component {
     }
     render() {
         return (
-            <div className="login">
-                {this.state.error && (
-                    <p className="error">{this.state.error}</p>
-                )}
-                <input
-                    name="email"
-                    type="email"
-                    placeholder="Email"
-                    onChange={(e) => this.handleChange(e)}
-                    required
-                />
-                <input
-                    name="password"
-                    type="password"
-                    placeholder="Password"
-                    onChange={(e) => this.handleChange(e)}
-                    required
-                />
-                <button onClick={() => this.handleSubmit()}>Log In</button>
-                <p>
+            <>
+                <div className="login">
+                    {this.state.error && (
+                        <p className="error">{this.state.error}</p>
+                    )}
+                    <input
+                        name="email"
+                        type="email"
+                        placeholder="Email"
+                        onChange={(e) => this.handleChange(e)}
+                        required
+                    />
+                    <input
+                        name="password"
+                        type="password"
+                        placeholder="Password"
+                        onChange={(e) => this.handleChange(e)}
+                        required
+                    />
+                    <button className="btn" onClick={() => this.handleSubmit()}>
+                        Log In
+                    </button>
+                </div>
+                <p className="login__signup-link">
                     Not yet a member? <Link to="/">Sign Up</Link>
                 </p>
-                <p>
+                <p className="login__reset-password">
                     Forgot your password?{" "}
                     <Link to="/reset">Reset your password</Link>
                 </p>
-            </div>
+            </>
         );
     }
 }

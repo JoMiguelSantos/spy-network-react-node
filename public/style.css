@@ -13,12 +13,42 @@ header {
 }
 
 .btn {
+    color: chartreuse;
+    background-color: transparent;
     font-family: "Montserrat Subrayada", sans-serif;
+    width: 7rem;
+    font-size: 1.2rem;
 }
 
 .btn:hover {
     cursor: pointer;
     text-decoration: underline;
+    color: white;
+}
+
+.welcome__logo--container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.welcome__logo {
+    width: 600px;
+    height: 600px;
+    margin: 0 auto;
+}
+
+.welcome__title {
+    margin: 2rem 2rem 0 2rem;
+    font-family: "Montserrat Subrayada", sans-serif;
+}
+
+.welcome__text {
+    text-align: center;
+}
+
+.welcome__text--author {
+    font-family: "Montserrat Subrayada", sans-serif;
     color: white;
 }
 
@@ -33,6 +63,31 @@ header {
     margin: 1rem;
     width: 50px;
     height: 50px;
+}
+
+.registration {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.registration input {
+    padding: 5.5px 0;
+}
+
+.registration__login-link {
+    text-align: center;
+}
+
+.login {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+}
+
+.login__signup-link,
+.login__reset-password {
+    text-align: center;
 }
 
 .profile__container {
@@ -155,18 +210,12 @@ header {
 }
 
 .uploader__input--submit-btn {
-    color: chartreuse;
     margin-top: 1rem;
-    background-color: transparent;
-    font-family: "Montserrat Subrayada", sans-serif;
-    width: 7rem;
     font-size: 1.2rem;
     border: 3px solid chartreuse;
 }
 
 .uploader__input--submit-btn:hover {
-    cursor: pointer;
-    color: white;
     border: 3px solid white;
 }
 

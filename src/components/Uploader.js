@@ -78,7 +78,7 @@ export default class Uploader extends React.Component {
                 </div>
                 {this.state.submit && (
                     <button
-                        className="uploader__input--submit-btn"
+                        className="uploader__input--submit-btn btn"
                         onClick={() => this.handleSubmit()}
                     >
                         Update
