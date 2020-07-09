@@ -19,6 +19,9 @@ const Profile = ({ toggleModal, first, last, image, bio, setBio, picSize }) => {
             </div>
             <div className="profile__details--container">
                 <h1>{`${first} ${last}`}</h1>
+                <p className="profile__bio--text">
+                    {bio || "No bio available."}
+                </p>
                 <BioEditor setBio={setBio} bio={bio} />
             </div>
         </div>

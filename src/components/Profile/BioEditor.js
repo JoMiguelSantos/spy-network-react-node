@@ -45,10 +45,9 @@ export default class BioEditor extends React.Component {
     render() {
         return (
             <div>
-                <p className="profile__bio--text">{this.props.bio}</p>
                 {!this.state.isVisible && (
                     <p
-                        className="profile__bio--change-btn"
+                        className="profile__bio--change-btn btn"
                         onClick={() => this.handleClick()}
                     >
                         {this.props.bio ? "Edit Bio" : "Add Bio"}

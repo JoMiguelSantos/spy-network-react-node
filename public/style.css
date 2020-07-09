@@ -136,6 +136,11 @@ header {
     border: 2px solid white;
 }
 
+.other.profile__pic--img:hover {
+    cursor: none;
+    border: 2px solid chartreuse;
+}
+
 .profile__pic--img.small {
     width: 50px;
     height: 50px;
@@ -146,13 +151,7 @@ header {
     height: 200px;
 }
 .profile__bio--change-btn {
-    font-family: "Montserrat Subrayada", sans-serif;
-}
-
-.profile__bio--change-btn:hover {
-    cursor: pointer;
-    text-decoration: underline;
-    color: white;
+    margin: 0;
 }
 
 .profile__bio--update {

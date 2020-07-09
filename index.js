@@ -168,6 +168,21 @@ app.get("/user", async (req, res) => {
     }
 });
 
+app.get("/api/user/:user_id", async (req, res) => {
+    try {
+        let data = await db.readUser({ id: req.params.user_id });
+        if (data.rowCount > 0) {
+            let user = data.rows[0];
+            delete user.password;
+            res.json({ success: true, user });
+        } else {
+            res.sendStatus(404);
+        }
+    } catch (err) {
+        res.sendStatus(500);
+    }
+});
+
 app.post("/upload", uploader.single("image"), uploadFileS3, (req, res) => {
     if (req.file) {
         const { filename } = req.file;
