@@ -11,7 +11,7 @@ const Welcome = () => {
             <div class="welcome__logo--container">
                 <img
                     className="welcome__logo"
-                    src="agency.png"
+                    src="/agency.png"
                     alt="large logo"
                 />
             </div>

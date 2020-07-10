@@ -5,7 +5,7 @@ const ProfilePic = ({ toggleModal, first, last, image, size }) => {
         <div className="profile__pic--container" onClick={toggleModal}>
             <img
                 className={"profile__pic--img " + size}
-                src={image || "default.png"}
+                src={image || "/default.png"}
                 alt={`${first} ${last}`}
             />
         </div>

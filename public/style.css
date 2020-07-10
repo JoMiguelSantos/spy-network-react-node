@@ -137,7 +137,7 @@ header {
 }
 
 .other.profile__pic--img:hover {
-    cursor: none;
+    cursor: auto;
     border: 2px solid chartreuse;
 }
 

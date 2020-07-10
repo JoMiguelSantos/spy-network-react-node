@@ -60,7 +60,7 @@ export default class Uploader extends React.Component {
                     className="uploader__back-btn"
                     onClick={() => this.props.closeModal()}
                 >
-                    Back to Bio
+                    Back
                 </p>
                 <div>
                     <label className="uploader__input--label" htmlFor="file">

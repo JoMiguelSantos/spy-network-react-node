@@ -12,10 +12,10 @@ export default class OtherProfile extends React.Component {
             match: { params },
         } = this.props;
 
-        if (this.props.currentUserId === params.userId) {
+        if (this.props.currentUserId == params.id) {
             this.props.history.push("/");
         }
-        axios.get(`/api/user/${params.userId}`).then((res) => {
+        axios.get(`/api/user/${params.id}`).then((res) => {
             const { image, first, last, bio } = res.data.user;
             this.setState({ image, first, last, bio });
         });
@@ -23,19 +23,23 @@ export default class OtherProfile extends React.Component {
 
     render() {
         return (
-            <>
-                <div className="other profile__pic--container">
-                    <img
-                        className="other profile__pic--img medium"
-                        src={this.state.image || "default.png"}
-                        alt={`${this.state.first} ${this.state.last}`}
-                    />
+            <div className="other profile__container">
+                <div className="profile__image--container">
+                    <div className="other profile__pic--container">
+                        <img
+                            className="other profile__pic--img medium"
+                            src={this.state.image || "/default.png"}
+                            alt={`${this.state.first} ${this.state.last}`}
+                        />
+                    </div>
                 </div>
                 <div className="other profile__details--container">
                     <h1>{`${this.state.first} ${this.state.last}`}</h1>
-                    <p className="other profile__bio--text">{this.state.bio}</p>
+                    <p className="other profile__bio--text">
+                        {this.state.bio || "This user has no bio yet."}
+                    </p>
                 </div>
-            </>
+            </div>
         );
     }
 }

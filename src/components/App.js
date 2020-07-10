@@ -9,8 +9,8 @@ import OtherProfile from "./OtherProfile";
 import ProfilePic from "./Profile/ProfilePic";
 
 export default class App extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             uploaderIsVisible: false,
             image: "",
@@ -81,7 +81,7 @@ export default class App extends React.Component {
                             />
                             <Route
                                 path="/user/:id"
-                                component={() => (
+                                component={(props) => (
                                     <OtherProfile
                                         currentUserId={this.state.id}
                                         match={props.match}
