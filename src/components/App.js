@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Link } from "react-router-dom";
 import axios from "../../axios";
 
 import Uploader from "./Uploader";
@@ -7,6 +7,7 @@ import Logo from "./Logo";
 import Profile from "./Profile";
 import OtherProfile from "./OtherProfile";
 import ProfilePic from "./Profile/ProfilePic";
+import FindPeople from "./FindPeople";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -53,6 +54,7 @@ export default class App extends React.Component {
             <div className="app__container">
                 <header>
                     <Logo />
+                    <a href="/users">Find more Spies</a>
                     <ProfilePic
                         first={this.state.first}
                         last={this.state.last}
@@ -89,6 +91,7 @@ export default class App extends React.Component {
                                     />
                                 )}
                             />
+                            <Route path="/users" component={FindPeople} />
                         </div>
                     </BrowserRouter>
                 )}

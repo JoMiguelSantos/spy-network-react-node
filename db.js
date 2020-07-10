@@ -21,6 +21,16 @@ exports.readUser = ({ email, id }) => {
     return db.query(query, [email || id]);
 };
 
+exports.readMatchingUsers = ({ search }) => {
+    const query = `SELECT * FROM users WHERE first ILIKE $1 OR last ILIKE $1;`;
+    return db.query(query, [search + "%"]);
+};
+
+exports.readLast3Users = () => {
+    const query = `SELECT * FROM users ORDER BY id DESC LIMIT 3;`;
+    return db.query(query);
+};
+
 exports.updateUser = ({ first, last, email, password }) => {
     const query = `UPDATE users
                    SET first = $1, 

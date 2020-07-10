@@ -39,6 +39,12 @@ export default class OtherProfile extends React.Component {
                         {this.state.bio || "This user has no bio yet."}
                     </p>
                 </div>
+                <p
+                    className="btn go-back"
+                    onClick={() => this.props.history.goBack()}
+                >
+                    Go Back
+                </p>
             </div>
         );
     }

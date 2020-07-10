@@ -168,6 +168,40 @@ app.get("/user", async (req, res) => {
     }
 });
 
+app.get("/api/users", async (req, res) => {
+    try {
+        let data = await db.readLast3Users();
+        if (data.rowCount > 0) {
+            let cleanedData = data.rows.map((user) => {
+                delete user.password;
+                return user;
+            });
+            res.json({ success: true, users: cleanedData });
+        } else {
+            res.sendStatus(404);
+        }
+    } catch (err) {
+        res.sendStatus(500);
+    }
+});
+
+app.get("/api/users/:search", async (req, res) => {
+    try {
+        let data = await db.readMatchingUsers({ search: req.params.search });
+        if (data.rowCount > 0) {
+            let cleanedData = data.rows.map((user) => {
+                delete user.password;
+                return user;
+            });
+            res.json({ success: true, users: cleanedData });
+        } else {
+            res.sendStatus(404);
+        }
+    } catch (err) {
+        res.sendStatus(500);
+    }
+});
+
 app.get("/api/user/:user_id", async (req, res) => {
     try {
         let data = await db.readUser({ id: req.params.user_id });

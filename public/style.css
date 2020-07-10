@@ -10,6 +10,11 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 2px solid chartreuse;
+}
+
+input {
+    font-family: "Special Elite", cursive;
 }
 
 .btn {
@@ -216,6 +221,50 @@ header {
 
 .uploader__input--submit-btn:hover {
     border: 3px solid white;
+}
+
+.user__search--title {
+    margin-left: 1rem;
+}
+
+.user__search--match {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 1rem;
+}
+
+.user__search--match.img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+.user__search--match.text {
+    margin: 1rem;
+}
+
+.user__search--init-display p {
+    margin-left: 2rem;
+}
+
+.user__search--init-display > :first-child {
+    color: white;
+}
+
+.user__search--input {
+    margin-left: 2rem;
+    padding: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.other.profile__container {
+    position: relative;
+}
+
+.go-back {
+    position: absolute;
+    right: 1rem;
+    top: 0;
 }
 
 .inputfile {
