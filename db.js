@@ -123,3 +123,33 @@ exports.deleteToken = ({ id }) => {
     const query = `DELETE FROM reset_codes WHERE id = $1`;
     return db.query(query, [id]);
 };
+
+exports.readFriendship = ({ user_id, friend_id }) => {
+    const query = `SELECT * FROM friendships
+           WHERE (receiver_id = $1 AND sender_id = $2)
+           OR (receiver_id = $2 AND sender_id = $1);`;
+    return db.query(query, [user_id, friend_id]);
+};
+
+exports.createFriendship = ({ user_id, friend_id }) => {
+    const query = `INSERT INTO friendships (sender_id, receiver_id) 
+                   VALUES ($1, $2) RETURNING *;`;
+    return db.query(query, [user_id, friend_id]);
+};
+
+exports.updateFriendship = ({ user_id, friend_id }) => {
+    const query = `UPDATE friendships
+                   SET accepted = TRUE
+                   WHERE (receiver_id = $1 AND sender_id = $2)
+                        OR (receiver_id = $2 AND sender_id = $1)
+                   RETURNING *;`;
+    return db.query(query, [user_id, friend_id]);
+};
+
+exports.deleteFriendship = ({ user_id, friend_id }) => {
+    const query = `DELETE 
+                    FROM friendships 
+                    WHERE (receiver_id = $1 AND sender_id = $2)
+                        OR (receiver_id = $2 AND sender_id = $1)`;
+    return db.query(query, [user_id, friend_id]);
+};

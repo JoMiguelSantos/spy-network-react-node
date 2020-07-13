@@ -106,6 +106,7 @@ input {
     flex-direction: column;
     align-items: center;
     height: 100%;
+    max-width: 15rem;
 }
 
 .profile__image--update-btn {
@@ -128,6 +129,12 @@ input {
 
 .profile__details--container h1 {
     margin: 1rem 0 0 0;
+}
+
+.profile__pic--container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .profile__pic--img {
@@ -259,6 +266,12 @@ input {
 
 .other.profile__container {
     position: relative;
+}
+
+.friendship__btn {
+    width: 12rem;
+    font-size: 0.8rem;
+    margin: 0 auto;
 }
 
 .go-back {

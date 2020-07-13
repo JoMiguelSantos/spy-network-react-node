@@ -10,16 +10,21 @@ const FindPeople = () => {
     const [noResults, setNoResults] = useState(false);
 
     useEffect(() => {
-        (async () => {
-            axios
-                .get("/api/users")
-                .then(({ data }) => {
-                    setLast3Users(data.users);
-                })
-                .catch(() => {
-                    setNoResults(true);
-                });
-        })();
+        let mounted = true;
+        if (mounted) {
+            (() => {
+                axios
+                    .get("/api/users")
+                    .then(({ data }) => {
+                        setLast3Users(data.users);
+                    })
+                    .catch(() => {
+                        setNoResults(true);
+                    });
+            })();
+        }
+
+        return () => (mounted = false);
     }, []);
 
     const handleChange = (e) => {

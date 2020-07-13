@@ -248,6 +248,71 @@ app.post("/bio", async (req, res) => {
     }
 });
 
+app.get("/friendship/:friend_id", async (req, res) => {
+    try {
+        const data = await db.readFriendship({
+            user_id: req.session.userId,
+            friend_id: req.params.friend_id,
+        });
+        if (data.rowCount > 0) {
+            const friendship = data.rows[0];
+            res.json({ success: true, friendship });
+        } else {
+            res.sendStatus(404);
+        }
+    } catch (err) {
+        res.sendStatus(500);
+    }
+});
+app.post("/friendship/:friend_id", async (req, res) => {
+    try {
+        const data = await db.createFriendship({
+            user_id: req.session.userId,
+            friend_id: req.params.friend_id,
+        });
+        if (data.rowCount > 0) {
+            const friendship = data.rows[0];
+            res.json({ success: true, friendship });
+        } else {
+            res.sendStatus(404);
+        }
+    } catch (err) {
+        res.sendStatus(500);
+    }
+});
+app.put("/friendship/:friend_id", async (req, res) => {
+    try {
+        const data = await db.updateFriendship({
+            user_id: req.session.userId,
+            friend_id: req.params.friend_id,
+        });
+        if (data.rowCount > 0) {
+            const friendship = data.rows[0];
+            res.json({ success: true, friendship });
+        } else {
+            res.sendStatus(404);
+        }
+    } catch (err) {
+        res.sendStatus(500);
+    }
+});
+app.delete("/friendship/:friend_id", async (req, res) => {
+    try {
+        const data = await db.deleteFriendship({
+            user_id: req.session.userId,
+            friend_id: req.params.friend_id,
+        });
+        if (data.rowCount > 0) {
+            const friendship = data.rows[0];
+            res.json({ success: true, friendship });
+        } else {
+            res.sendStatus(404);
+        }
+    } catch (err) {
+        res.sendStatus(500);
+    }
+});
+
 app.get("*", function (req, res) {
     if (!req.session.userId) {
         res.redirect("/welcome");
