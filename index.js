@@ -302,7 +302,6 @@ app.put("/friendship/:friend_id", async (req, res) => {
         });
         if (data.rowCount > 0) {
             const friendship = data.rows[0];
-            console.log("put friendship", friendship);
             res.json({ success: true, friendship });
         } else {
             res.sendStatus(404);

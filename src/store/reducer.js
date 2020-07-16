@@ -4,7 +4,6 @@ export default (state = {}, action) => {
     };
 
     const removeFriend = (state, action) => {
-        console.log("removeFriend", action);
         return {
             ...state,
             friends: state.friends.filter((friend) => friend.id != action.id),
@@ -12,7 +11,6 @@ export default (state = {}, action) => {
     };
 
     const addFriend = (state, action) => {
-        console.log("addFriend", state, action);
         return {
             ...state,
             friends: state.friends.map((friend) => {
