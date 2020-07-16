@@ -124,6 +124,16 @@ exports.deleteToken = ({ id }) => {
     return db.query(query, [id]);
 };
 
+exports.readAllFriendships = ({ user_id }) => {
+    const query = `SELECT users.id, first, last, image, accepted
+                    FROM friendships
+                    JOIN users
+                        ON (accepted = false AND receiver_id = $1 AND sender_id = users.id)
+                            OR (accepted = true AND receiver_id = $1 AND sender_id = users.id)
+                            OR (accepted = true AND sender_id = $1 AND receiver_id = users.id)`;
+    return db.query(query, [user_id]);
+};
+
 exports.readFriendship = ({ user_id, friend_id }) => {
     const query = `SELECT * FROM friendships
            WHERE (receiver_id = $1 AND sender_id = $2)

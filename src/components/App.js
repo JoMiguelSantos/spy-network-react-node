@@ -8,6 +8,7 @@ import Profile from "./Profile";
 import OtherProfile from "./OtherProfile";
 import ProfilePic from "./Profile/ProfilePic";
 import FindPeople from "./FindPeople";
+import Friends from "./Friends";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -55,6 +56,8 @@ export default class App extends React.Component {
                 <header>
                     <Logo />
                     <a href="/users">Find more Spies</a>
+                    <a href="/friends">Friendships</a>
+                    <a href="/logout">Log Out</a>
                     <ProfilePic
                         first={this.state.first}
                         last={this.state.last}
@@ -92,6 +95,7 @@ export default class App extends React.Component {
                                 )}
                             />
                             <Route path="/users" component={FindPeople} />
+                            <Route path="/friends" component={Friends} />
                         </div>
                     </BrowserRouter>
                 )}

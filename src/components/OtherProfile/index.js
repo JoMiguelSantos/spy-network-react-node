@@ -5,7 +5,15 @@ import FriendButton from "./FriendButton";
 export default class OtherProfile extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { image: "", first: "", last: "", bio: "" };
+
+        this._isMounted = false;
+        this.state = {
+            image: "",
+            first: "",
+            last: "",
+            bio: "",
+            mounted: false,
+        };
     }
 
     componentDidMount() {
@@ -16,10 +24,17 @@ export default class OtherProfile extends React.Component {
         if (this.props.currentUserId == params.id) {
             this.props.history.push("/");
         }
+        this._isMounted = true;
         axios.get(`/api/user/${params.id}`).then((res) => {
             const { image, first, last, bio } = res.data.user;
-            this.setState({ image, first, last, bio });
+            if (this._isMounted) {
+                this.setState({ image, first, last, bio });
+            }
         });
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     render() {

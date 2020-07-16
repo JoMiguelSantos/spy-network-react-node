@@ -17,6 +17,11 @@ export default class Login extends React.Component {
         });
     }
     handleSubmit() {
+        if (!this.state.password || !this.state.email) {
+            return this.setState({
+                error: "Please fill in both email and password fiels.",
+            });
+        }
         axios
             .post("/login", { ...this.state })
             .then(() => {
@@ -39,10 +44,10 @@ export default class Login extends React.Component {
     render() {
         return (
             <>
+                {this.state.error && (
+                    <p className="error">{this.state.error}</p>
+                )}
                 <div className="login">
-                    {this.state.error && (
-                        <p className="error">{this.state.error}</p>
-                    )}
                     <input
                         name="email"
                         type="email"

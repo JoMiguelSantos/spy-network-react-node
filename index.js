@@ -79,7 +79,7 @@ app.post("/login", (req, res) => {
     });
 });
 
-app.post("/logout", (req, res) => {
+app.get("/logout", (req, res) => {
     req.session = null;
     res.redirect("/");
 });
@@ -248,6 +248,18 @@ app.post("/bio", async (req, res) => {
     }
 });
 
+app.get("/friendship", async (req, res) => {
+    try {
+        const data = await db.readAllFriendships({
+            user_id: req.session.userId,
+        });
+        const friends = data.rows;
+        res.json({ success: true, friends });
+    } catch (err) {
+        res.sendStatus(500);
+    }
+});
+
 app.get("/friendship/:friend_id", async (req, res) => {
     try {
         const data = await db.readFriendship({
@@ -264,6 +276,7 @@ app.get("/friendship/:friend_id", async (req, res) => {
         res.sendStatus(500);
     }
 });
+
 app.post("/friendship/:friend_id", async (req, res) => {
     try {
         const data = await db.createFriendship({
@@ -280,6 +293,7 @@ app.post("/friendship/:friend_id", async (req, res) => {
         res.sendStatus(500);
     }
 });
+
 app.put("/friendship/:friend_id", async (req, res) => {
     try {
         const data = await db.updateFriendship({
@@ -288,6 +302,7 @@ app.put("/friendship/:friend_id", async (req, res) => {
         });
         if (data.rowCount > 0) {
             const friendship = data.rows[0];
+            console.log("put friendship", friendship);
             res.json({ success: true, friendship });
         } else {
             res.sendStatus(404);
@@ -296,6 +311,7 @@ app.put("/friendship/:friend_id", async (req, res) => {
         res.sendStatus(500);
     }
 });
+
 app.delete("/friendship/:friend_id", async (req, res) => {
     try {
         const data = await db.deleteFriendship({
@@ -303,8 +319,11 @@ app.delete("/friendship/:friend_id", async (req, res) => {
             friend_id: req.params.friend_id,
         });
         if (data.rowCount > 0) {
-            const friendship = data.rows[0];
-            res.json({ success: true, friendship });
+            // const friendship = data.rows[0];
+            res.json({
+                success: true,
+                friendship: { id: req.params.friend_id },
+            });
         } else {
             res.sendStatus(404);
         }

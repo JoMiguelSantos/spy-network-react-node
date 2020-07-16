@@ -7,8 +7,8 @@ import { HashRouter, Route } from "react-router-dom";
 const Welcome = () => {
     return (
         <>
-            <h1 class="welcome__title">Welcome to the Agency</h1>
-            <div class="welcome__logo--container">
+            <h1 className="welcome__title">Welcome to the Agency</h1>
+            <div className="welcome__logo--container">
                 <img
                     className="welcome__logo"
                     src="/agency.png"
