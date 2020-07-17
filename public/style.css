@@ -345,6 +345,8 @@ input {
     width: 80%;
     overflow-y: scroll;
     border: 2px solid white;
+    margin-bottom: 0;
+    box-shadow: 0 0 10px chartreuse;
 }
 
 .chat__messages--message {
@@ -367,6 +369,14 @@ input {
 
 .chat__message {
     color: white;
+}
+
+.chat__messages--textarea {
+    width: 80%;
+    border: none;
+    box-shadow: 0 0 10px white;
+    font-family: "Special Elite", cursive;
+    padding: 0.5rem 1.35rem;
 }
 
 .go-back {

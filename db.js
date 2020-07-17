@@ -168,7 +168,7 @@ exports.getLast10Messages = () => {
     const query = `SELECT users.first, users.last, users.image, chats.message, chats.created_at, chats.sender_id
                     FROM chats
                     LEFT JOIN users ON chats.sender_id = users.id
-                    ORDER BY chats.created_at
+                    ORDER BY chats.created_at DESC
                     LIMIT 10`;
     return db.query(query);
 };

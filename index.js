@@ -354,14 +354,12 @@ io.on("connection", (socket) => {
     const userId = socket.request.session.userId;
 
     db.getLast10Messages().then((data) => {
-        console.log("chatMessage", data.rows);
         io.sockets.emit("chatMessages", data.rows);
     });
 
     socket.on("messageSent", ({ message }) => {
         db.createMessage({ user_id: userId, message }).then(({ rows }) => {
             db.readMessage({ message_id: rows[0].id }).then(({ rows }) => {
-                console.log("chatMessage", rows[0]);
                 io.sockets.emit("chatMessage", rows[0]);
             });
         });

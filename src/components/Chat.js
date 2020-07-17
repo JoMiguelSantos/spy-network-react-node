@@ -57,10 +57,11 @@ export default function Chat() {
                     })}
             </ul>
             <textarea
+                className="chat__messages--textarea"
                 cols="50"
                 rows="5"
                 onKeyDown={keyCheck}
-                placeholder="Send a message to the chat"
+                placeholder="Write a message and press Enter to send it to the Chat."
             ></textarea>
         </div>
     );

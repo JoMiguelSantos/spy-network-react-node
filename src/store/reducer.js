@@ -29,8 +29,7 @@ export default (state = {}, action) => {
                 created_at: new Date(message.created_at).toUTCString(),
             };
         });
-        console.log(formattedMessages);
-        return { ...state, messages: formattedMessages };
+        return { ...state, messages: formattedMessages.reverse() };
     };
 
     const addMessage = (state, action) => {
