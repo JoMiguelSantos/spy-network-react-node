@@ -16,3 +16,11 @@ export const acceptFriend = async (friend_id) => {
     await axios.put(`/friendship/${friend_id}`);
     return { type: "ACCEPT_FRIEND", id: friend_id };
 };
+
+export const chatMessages = (messages) => {
+    return { type: "LAST_10_MESSAGES", messages };
+};
+
+export const chatMessage = (message) => {
+    return { type: "MESSAGE_SENT", message };
+};

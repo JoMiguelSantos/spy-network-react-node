@@ -9,6 +9,7 @@ import OtherProfile from "./OtherProfile";
 import ProfilePic from "./Profile/ProfilePic";
 import FindPeople from "./FindPeople";
 import Friends from "./Friends";
+import Chat from "./Chat";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -57,6 +58,7 @@ export default class App extends React.Component {
                     <Logo />
                     <a href="/users">Find more Spies</a>
                     <a href="/friends">Friendships</a>
+                    <a href="/chat">Chat</a>
                     <a href="/logout">Log Out</a>
                     <ProfilePic
                         first={this.state.first}
@@ -96,6 +98,7 @@ export default class App extends React.Component {
                             />
                             <Route path="/users" component={FindPeople} />
                             <Route path="/friends" component={Friends} />
+                            <Route path="/chat" component={Chat} />
                         </div>
                     </BrowserRouter>
                 )}

@@ -26,8 +26,16 @@ export default class Registration extends React.Component {
                 return location.replace("/");
             })
             .catch(() =>
-                this.setState({ error: "Oops, something went wrong" })
+                this.setState({
+                    error: "Oops, something went wrong",
+                })
             );
+    }
+    keyCheck(e) {
+        if (e.key == "Enter") {
+            e.preventDefault();
+            this.handleSubmit();
+        }
     }
     render() {
         return (
@@ -37,6 +45,7 @@ export default class Registration extends React.Component {
                         <p className="error">{this.state.error}</p>
                     )}
                     <input
+                        onKeyDown={(e) => this.keyCheck(e)}
                         name="first"
                         type="text"
                         placeholder="First Name"
@@ -44,6 +53,7 @@ export default class Registration extends React.Component {
                         required
                     />
                     <input
+                        onKeyDown={(e) => this.keyCheck(e)}
                         name="last"
                         type="text"
                         placeholder="Last Name"
@@ -51,6 +61,7 @@ export default class Registration extends React.Component {
                         required
                     />
                     <input
+                        onKeyDown={(e) => this.keyCheck(e)}
                         name="email"
                         type="email"
                         placeholder="Email"
@@ -58,6 +69,7 @@ export default class Registration extends React.Component {
                         required
                     />
                     <input
+                        onKeyDown={(e) => this.keyCheck(e)}
                         name="password"
                         type="password"
                         placeholder="Password"

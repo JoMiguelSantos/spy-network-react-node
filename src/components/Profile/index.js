@@ -1,8 +1,11 @@
 import React from "react";
 import ProfilePic from "./ProfilePic";
 import BioEditor from "./BioEditor";
+import { useHistory } from "react-router-dom";
 
 const Profile = ({ toggleModal, first, last, image, bio, setBio, picSize }) => {
+    const history = useHistory();
+
     return (
         <div className="profile__container">
             <div className="profile__image--container">
@@ -23,6 +26,9 @@ const Profile = ({ toggleModal, first, last, image, bio, setBio, picSize }) => {
                     {bio || "No bio available."}
                 </p>
                 <BioEditor setBio={setBio} bio={bio} />
+                <p className="btn go-back" onClick={() => history.go(-2)}>
+                    Go Back
+                </p>
             </div>
         </div>
     );

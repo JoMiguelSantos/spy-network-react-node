@@ -41,6 +41,12 @@ export default class Login extends React.Component {
                 }
             });
     }
+    keyCheck(e) {
+        if (e.key == "Enter") {
+            e.preventDefault();
+            this.handleSubmit();
+        }
+    }
     render() {
         return (
             <>
@@ -49,6 +55,7 @@ export default class Login extends React.Component {
                 )}
                 <div className="login">
                     <input
+                        onKeyDown={(e) => this.keyCheck(e)}
                         name="email"
                         type="email"
                         placeholder="Email"
@@ -56,6 +63,7 @@ export default class Login extends React.Component {
                         required
                     />
                     <input
+                        onKeyDown={(e) => this.keyCheck(e)}
                         name="password"
                         type="password"
                         placeholder="Password"

@@ -163,3 +163,26 @@ exports.deleteFriendship = ({ user_id, friend_id }) => {
                         OR (receiver_id = $2 AND sender_id = $1)`;
     return db.query(query, [user_id, friend_id]);
 };
+
+exports.getLast10Messages = () => {
+    const query = `SELECT users.first, users.last, users.image, chats.message, chats.created_at, chats.sender_id
+                    FROM chats
+                    LEFT JOIN users ON chats.sender_id = users.id
+                    ORDER BY chats.created_at
+                    LIMIT 10`;
+    return db.query(query);
+};
+
+exports.createMessage = ({ user_id, message }) => {
+    const query = `INSERT INTO chats (sender_id, message) 
+                   VALUES ($1, $2) RETURNING *;`;
+    return db.query(query, [user_id, message]);
+};
+
+exports.readMessage = ({ message_id }) => {
+    const query = `SELECT users.first, users.last, users.image, chats.message, chats.created_at, chats.sender_id, chats.id
+                    FROM chats
+                    LEFT JOIN users ON chats.sender_id = users.id
+                    WHERE chats.id = $1`;
+    return db.query(query, [message_id]);
+};

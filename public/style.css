@@ -112,6 +112,7 @@ input {
     display: flex;
     align-items: center;
     height: 20rem;
+    position: relative;
 }
 
 .profile__image--container {
@@ -331,6 +332,41 @@ input {
     width: 12rem;
     font-size: 0.8rem;
     margin: 0 auto;
+}
+
+.chat__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.chat__messages--container {
+    height: 500px;
+    width: 80%;
+    overflow-y: scroll;
+    border: 2px solid white;
+}
+
+.chat__messages--message {
+    list-style: none;
+    display: flex;
+}
+
+.chat__messages--data-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat__messages--user-info {
+    display: flex;
+}
+
+.chat__messages--user-info > * {
+    margin: 1rem 0.5rem 0 0;
+}
+
+.chat__message {
+    color: white;
 }
 
 .go-back {

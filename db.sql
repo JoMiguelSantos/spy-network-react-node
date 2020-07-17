@@ -27,3 +27,10 @@ CREATE TABLE friendships(
   accepted BOOLEAN DEFAULT false,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE chats(
+  id SERIAL PRIMARY KEY,
+  sender_id INT NOT NULL REFERENCES users(id),
+  message TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

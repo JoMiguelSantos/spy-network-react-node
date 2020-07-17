@@ -9,20 +9,19 @@ const { sendEmail } = require("./ses");
 const { uploadFileS3 } = require("./s3");
 const { uploader } = require("./multer");
 const { s3Url } = require("./config.json");
+const server = require("http").Server(app);
+const io = require("socket.io")(server, { origins: "localhost:8080" });
 
 const { hashPassword, comparePassword } = require("./bc");
 const db = require("./db");
-
+const cookieSessionMiddleware = cookieSession({
+    secret: process.env.cookieSecret || require("./secrets.json").cookieSecret,
+    maxAge: 1000 * 60 * 60 * 24 * 14,
+});
 app.use(compression());
 app.use(express.json());
 app.use(helmet());
-app.use(
-    cookieSession({
-        secret:
-            process.env.cookieSecret || require("./secrets.json").cookieSecret,
-        maxAge: 1000 * 60 * 60 * 24 * 14,
-    })
-);
+app.use(cookieSessionMiddleware);
 app.use(express.static("public"));
 
 app.use(
@@ -36,6 +35,9 @@ app.use(function (req, res, next) {
     res.set("x-frame-options", "deny");
     res.cookie("mytoken", req.csrfToken());
     next();
+});
+io.use(function (socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
 });
 
 if (process.env.NODE_ENV != "production") {
@@ -339,6 +341,29 @@ app.get("*", function (req, res) {
     }
 });
 
-app.listen(8080, function () {
+server.listen(8080, function () {
     console.log("I'm listening.");
+});
+
+io.on("connection", (socket) => {
+    console.log(`socket id ${socket.id} is connected!!`);
+    if (!socket.request.session.userId) {
+        return socket.disconnect(true);
+    }
+
+    const userId = socket.request.session.userId;
+
+    db.getLast10Messages().then((data) => {
+        console.log("chatMessage", data.rows);
+        io.sockets.emit("chatMessages", data.rows);
+    });
+
+    socket.on("messageSent", ({ message }) => {
+        db.createMessage({ user_id: userId, message }).then(({ rows }) => {
+            db.readMessage({ message_id: rows[0].id }).then(({ rows }) => {
+                console.log("chatMessage", rows[0]);
+                io.sockets.emit("chatMessage", rows[0]);
+            });
+        });
+    });
 });
