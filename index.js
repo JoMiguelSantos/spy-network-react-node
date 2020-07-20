@@ -370,17 +370,31 @@ server.listen(8080, function () {
     console.log("I'm listening.");
 });
 
+let onlineUsers = {};
 io.on("connection", (socket) => {
     console.log(`socket id ${socket.id} is connected!!`);
     if (!socket.request.session.userId) {
         return socket.disconnect(true);
     }
 
-    const userId = socket.request.session.userId;
-
     db.getLast10Messages().then((data) => {
         io.sockets.emit("chatMessages", data.rows);
     });
+
+    const userId = socket.request.session.userId;
+
+    if (!onlineUsers[userId]) {
+        onlineUsers[userId] = new Set([socket.id]);
+        io.sockets.emit("newUserOnline", userId);
+    } else {
+        onlineUsers[userId].add(socket.id);
+    }
+
+    db.getOnlineUsers({ online_users: Object.keys(onlineUsers) }).then(
+        ({ rows }) => {
+            io.sockets.emit("onlineUsers", rows[0]);
+        }
+    );
 
     socket.on("messageSent", ({ message }) => {
         db.createMessage({ user_id: userId, message }).then(({ rows }) => {
@@ -388,5 +402,13 @@ io.on("connection", (socket) => {
                 io.sockets.emit("chatMessage", rows[0]);
             });
         });
+    });
+
+    socket.on("disconnect", () => {
+        onlineUsers[userId].delete(socket.id);
+        if (onlineUsers[userId] && onlineUsers[userId].size == 0) {
+            delete onlineUsers[userId];
+            io.sockets.emit("userOffline", userId);
+        }
     });
 });

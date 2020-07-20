@@ -29,3 +29,15 @@ export const deleteUser = async (user_id) => {
     await axios.delete(`/api/user/${user_id}`);
     return { type: "DELETE_USER", user_id };
 };
+
+export const addNewOnlineUser = (user) => {
+    return { type: "NEW_ONLINE_USER", user };
+};
+
+export const onlineUsers = (users) => {
+    return { type: "ONLINE_USERS", users };
+};
+
+export const userOffline = (user) => {
+    return { type: "USER_OFFLINE", user };
+};

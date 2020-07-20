@@ -175,3 +175,10 @@ exports.deleteChat = ({ user_id }) => {
                     WHERE sender_id = $1`;
     return db.query(query, [user_id]);
 };
+
+exports.getOnlineUsers = ({ online_users }) => {
+    const query = `SELECT first, last, image 
+                    FROM users 
+                    WHERE id IN $1;`;
+    return db.query(query, [online_users]);
+};

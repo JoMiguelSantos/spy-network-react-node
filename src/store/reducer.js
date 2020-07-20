@@ -43,6 +43,21 @@ export default (state = {}, action) => {
         };
     };
 
+    const addNewOnlineUser = (state, action) => {
+        return { ...state, onlineUsers: state.onlineUsers.concat(action.user) };
+    };
+    const onlineUsers = (state, action) => {
+        return { ...state, onlineUsers: action.onlineUsers };
+    };
+    const userOffline = (state, action) => {
+        return {
+            ...state,
+            onlineUsers: state.onlineUsers.filter(
+                (user) => user.id != action.user
+            ),
+        };
+    };
+
     const deleteUser = (state, action) => {
         return {};
     };
@@ -59,6 +74,12 @@ export default (state = {}, action) => {
         return addMessage(state, action);
     } else if (action.type == "DELETE_USER") {
         return deleteUser(state, action);
+    } else if (action.type == "NEW_ONLINE_USER") {
+        return addNewOnlineUser(state, action);
+    } else if (action.type == "ONLINE_USERS") {
+        return onlineUsers(state, action);
+    } else if (action.type == "USER_OFFLINE") {
+        return userOffline(state, action);
     } else {
         return state;
     }
