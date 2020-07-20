@@ -43,6 +43,10 @@ export default (state = {}, action) => {
         };
     };
 
+    const deleteUser = (state, action) => {
+        return {};
+    };
+
     if (action.type == "GET_ALL_FRIENDS") {
         return loadAllFriends(state, action);
     } else if (action.type == "UNFRIEND_FRIEND") {
@@ -53,6 +57,8 @@ export default (state = {}, action) => {
         return loadMessages(state, action);
     } else if (action.type == "MESSAGE_SENT") {
         return addMessage(state, action);
+    } else if (action.type == "DELETE_USER") {
+        return deleteUser(state, action);
     } else {
         return state;
     }

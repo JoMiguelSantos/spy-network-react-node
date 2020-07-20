@@ -24,3 +24,8 @@ export const chatMessages = (messages) => {
 export const chatMessage = (message) => {
     return { type: "MESSAGE_SENT", message };
 };
+
+export const deleteUser = async (user_id) => {
+    await axios.delete(`/api/user/${user_id}`);
+    return { type: "DELETE_USER", user_id };
+};

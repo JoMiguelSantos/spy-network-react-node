@@ -6,7 +6,7 @@ const cookieSession = require("cookie-session");
 const helmet = require("helmet");
 const cryptoRandomString = require("crypto-random-string");
 const { sendEmail } = require("./ses");
-const { uploadFileS3 } = require("./s3");
+const { uploadFileS3, deleteFolderS3 } = require("./s3");
 const { uploader } = require("./multer");
 const { s3Url } = require("./config.json");
 const server = require("http").Server(app);
@@ -98,7 +98,8 @@ app.post("/signup", (req, res) => {
                 return res.sendStatus(201);
             })
             .catch((err) => {
-                return res.send(500).send(err);
+                console.log(err);
+                return res.sendStatus(500);
             });
     });
 });
@@ -172,7 +173,7 @@ app.get("/user", async (req, res) => {
 
 app.get("/api/users", async (req, res) => {
     try {
-        let data = await db.readLast3Users();
+        let data = await db.readLast3Users({ user_id: req.session.userId });
         if (data.rowCount > 0) {
             let cleanedData = data.rows.map((user) => {
                 delete user.password;
@@ -219,10 +220,34 @@ app.get("/api/user/:user_id", async (req, res) => {
     }
 });
 
+app.delete("/api/user/:user_id", deleteFolderS3, async (req, res) => {
+    await Promise.all([
+        db.deleteFriendship({ user_id: req.params.user_id }),
+        db.deleteChat({ user_id: req.params.user_id }),
+    ])
+        .then(() => {
+            db.deleteUser({ user_id: req.params.user_id })
+                .then(() => {
+                    // remove session cookie
+                    req.session = null;
+                    // redirect to "/"
+                    return res.sendStatus(204);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    return res.sendStatus("500");
+                });
+        })
+        .catch((err) => {
+            console.log(err);
+            return res.sendStatus("500");
+        });
+});
+
 app.post("/upload", uploader.single("image"), uploadFileS3, (req, res) => {
     if (req.file) {
         const { filename } = req.file;
-        const image = s3Url + filename;
+        const image = `${s3Url + req.session.userId}/${filename}`;
         return db
             .updateImage({ id: req.session.userId, image })
             .then(({ rows }) => {

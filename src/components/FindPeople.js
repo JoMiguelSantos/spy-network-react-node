@@ -57,7 +57,7 @@ const FindPeople = () => {
                     <Link to={`/user/${user.id}`}>
                         <img
                             className="user__search--match img"
-                            src={user.image}
+                            src={user.image || "/default.png"}
                             alt={`${user.first} ${user.last}`}
                         />
                     </Link>

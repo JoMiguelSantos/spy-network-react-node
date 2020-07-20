@@ -64,7 +64,7 @@ export default class App extends React.Component {
                         first={this.state.first}
                         last={this.state.last}
                         image={this.state.image}
-                        toggleModal={this.toggleModal}
+                        clickHandler={() => window.location.replace(`/`)}
                         size="small"
                     />
                 </header>
@@ -80,6 +80,7 @@ export default class App extends React.Component {
                                         last={this.state.last}
                                         image={this.state.image}
                                         bio={this.state.bio}
+                                        id={this.state.id}
                                         toggleModal={this.toggleModal}
                                         setBio={(newBio) => this.setBio(newBio)}
                                         picSize="medium"
@@ -104,7 +105,7 @@ export default class App extends React.Component {
                 )}
                 {this.state.uploaderIsVisible && (
                     <Uploader
-                        setImage={() => this.setImage()}
+                        setImage={(newPic) => this.setImage(newPic)}
                         closeModal={this.toggleModal}
                     />
                 )}

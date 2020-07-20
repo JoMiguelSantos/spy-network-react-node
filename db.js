@@ -26,9 +26,13 @@ exports.readMatchingUsers = ({ search }) => {
     return db.query(query, [search + "%"]);
 };
 
-exports.readLast3Users = () => {
-    const query = `SELECT * FROM users ORDER BY id DESC LIMIT 3;`;
-    return db.query(query);
+exports.readLast3Users = ({ user_id }) => {
+    const query = `SELECT * 
+                    FROM users 
+                    WHERE id != $1
+                    ORDER BY id DESC 
+                    LIMIT 3;`;
+    return db.query(query, [user_id]);
 };
 
 exports.updateUser = ({ first, last, email, password }) => {
@@ -64,34 +68,9 @@ exports.updateBio = ({ id, bio }) => {
     return db.query(query, [id, bio]);
 };
 
-exports.deleteUser = ({ id }) => {
+exports.deleteUser = ({ user_id }) => {
     const query = `DELETE FROM users WHERE id = $1`;
-    return db.query(query, [id]);
-};
-
-exports.readProfile = ({ user_id }) => {
-    const query = `SELECT * FROM user_profiles WHERE user_id = $1`;
     return db.query(query, [user_id]);
-};
-
-exports.createProfile = ({ user_id, age, city, url }) => {
-    const query = `INSERT INTO user_profiles (user_id, age, city, url) VALUES ($1, $2, $3, $4) RETURNING *;`;
-    return db.query(query, [user_id, age || null, city || "", url || ""]);
-};
-
-exports.updateProfile = ({ user_id, age, city, url }) => {
-    const query = `INSERT INTO user_profiles (age, city, url, user_id) 
-                       VALUES ($1, $2, $3, $4)
-                       ON CONFLICT (user_id)
-                       DO UPDATE SET age = $1, 
-                                     city = $2, 
-                                     url = $3;`;
-    return db.query(query, [age || null, city || "", url || "", user_id]);
-};
-
-exports.deleteProfile = ({ id }) => {
-    const query = `DELETE FROM user_profiles WHERE id = $1`;
-    return db.query(query, [id]);
 };
 
 exports.deleteTestUser = () => {
@@ -157,11 +136,15 @@ exports.updateFriendship = ({ user_id, friend_id }) => {
 };
 
 exports.deleteFriendship = ({ user_id, friend_id }) => {
-    const query = `DELETE 
-                    FROM friendships 
-                    WHERE (receiver_id = $1 AND sender_id = $2)
-                        OR (receiver_id = $2 AND sender_id = $1)`;
-    return db.query(query, [user_id, friend_id]);
+    const query = `DELETE FROM friendships 
+                    ${
+                        friend_id
+                            ? `WHERE (receiver_id = $1 AND sender_id = $2)
+                        OR (receiver_id = $2 AND sender_id = $1)`
+                            : `WHERE receiver_id = $1 OR sender_id = $1`
+                    }
+                    `;
+    return db.query(query, friend_id ? [user_id, friend_id] : [user_id]);
 };
 
 exports.getLast10Messages = () => {
@@ -185,4 +168,10 @@ exports.readMessage = ({ message_id }) => {
                     LEFT JOIN users ON chats.sender_id = users.id
                     WHERE chats.id = $1`;
     return db.query(query, [message_id]);
+};
+
+exports.deleteChat = ({ user_id }) => {
+    const query = `DELETE FROM chats 
+                    WHERE sender_id = $1`;
+    return db.query(query, [user_id]);
 };
