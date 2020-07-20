@@ -346,7 +346,7 @@ input {
     overflow-y: scroll;
     border: 2px solid white;
     margin-bottom: 0;
-    box-shadow: 0 0 10px chartreuse;
+    box-shadow: 0 0 10px white;
 }
 
 .chat__messages--message {
@@ -376,7 +376,25 @@ input {
     border: none;
     box-shadow: 0 0 10px white;
     font-family: "Special Elite", cursive;
-    padding: 0.5rem 1.35rem;
+    padding: 0.5rem 1.4rem;
+}
+
+.online-user {
+    list-style: none;
+    width: min-content;
+    text-align: center;
+}
+
+.online-users__container {
+    display: flex;
+    width: 80%;
+    align-items: center;
+    border-radius: 5px;
+    box-shadow: 0 0 10px chartreuse;
+}
+
+.online-user p {
+    margin: 0 0 0.2rem 0;
 }
 
 .go-back {

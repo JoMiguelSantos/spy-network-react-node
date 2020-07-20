@@ -3,6 +3,7 @@ import { socket } from "../socket";
 import { useSelector } from "react-redux";
 import ProfilePic from "./Profile/ProfilePic";
 import { useHistory } from "react-router-dom";
+import OnlineUsers from "./OnlineUsers";
 
 export default function Chat() {
     const elemRef = useRef();
@@ -25,6 +26,7 @@ export default function Chat() {
     return (
         <div className="chat__container">
             <h1 className="chat__title">Welcome to the Spy Chat</h1>
+            <OnlineUsers />
             <ul className="chat__messages--container" ref={elemRef}>
                 {chatMessages &&
                     chatMessages.map((message, index) => {

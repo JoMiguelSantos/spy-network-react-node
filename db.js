@@ -177,8 +177,8 @@ exports.deleteChat = ({ user_id }) => {
 };
 
 exports.getOnlineUsers = ({ online_users }) => {
-    const query = `SELECT first, last, image 
+    const query = `SELECT first, last, image, id
                     FROM users 
-                    WHERE id IN $1;`;
+                    WHERE id = ANY($1);`;
     return db.query(query, [online_users]);
 };

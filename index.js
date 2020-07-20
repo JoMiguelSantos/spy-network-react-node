@@ -385,14 +385,14 @@ io.on("connection", (socket) => {
 
     if (!onlineUsers[userId]) {
         onlineUsers[userId] = new Set([socket.id]);
-        io.sockets.emit("newUserOnline", userId);
+        socket.broadcast.emit("newUserOnline", userId);
     } else {
         onlineUsers[userId].add(socket.id);
     }
 
     db.getOnlineUsers({ online_users: Object.keys(onlineUsers) }).then(
         ({ rows }) => {
-            io.sockets.emit("onlineUsers", rows[0]);
+            io.sockets.emit("onlineUsers", rows);
         }
     );
 

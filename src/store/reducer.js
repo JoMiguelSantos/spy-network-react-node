@@ -47,7 +47,7 @@ export default (state = {}, action) => {
         return { ...state, onlineUsers: state.onlineUsers.concat(action.user) };
     };
     const onlineUsers = (state, action) => {
-        return { ...state, onlineUsers: action.onlineUsers };
+        return { ...state, onlineUsers: action.users };
     };
     const userOffline = (state, action) => {
         return {
