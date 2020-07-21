@@ -33,12 +33,18 @@ const Profile = ({
                     toggleModal={toggleModal}
                     size={picSize}
                 />
-                <p className="profile__image--update-btn" onClick={toggleModal}>
+                <button
+                    className="profile__image--update-btn btn"
+                    onClick={toggleModal}
+                >
                     Update Profile Image
-                </p>
-                <p className="profile__delete-btn btn" onClick={deleteHandler}>
+                </button>
+                <button
+                    className="profile__delete-btn btn"
+                    onClick={deleteHandler}
+                >
                     Delete My Account
-                </p>
+                </button>
             </div>
             <div className="profile__details--container">
                 <h1>{`${first} ${last}`}</h1>

@@ -396,6 +396,40 @@ io.on("connection", (socket) => {
         }
     );
 
+    socket.on("privateChatMessage", ({ friend_id, message }) => {
+        db.createPrivateMessage({
+            user_id: userId,
+            message,
+            friend_id,
+        }).then(({ rows }) => {
+            db.readMessage({ message_id: rows[0].id }).then(({ rows }) => {
+                if (onlineUsers[friend_id] && onlineUsers[friend_id].size > 0) {
+                    onlineUsers[friend_id].forEach((socketId) => {
+                        io.to(socketId).emit("newPrivateChatMessage", rows[0]);
+                    });
+                }
+                onlineUsers[userId].forEach((socketId) => {
+                    io.to(socketId).emit("newPrivateChatMessage", rows[0]);
+                });
+            });
+        });
+    });
+
+    socket.on("privateChat", ({ friend_id }) => {
+        db.getPrivateMessages({ friend_id, user_id: userId }).then(
+            ({ rows }) => {
+                if (onlineUsers[friend_id] && onlineUsers[friend_id].size > 0) {
+                    onlineUsers[friend_id].forEach((socketId) => {
+                        io.to(socketId).emit("privateChat", rows);
+                    });
+                }
+                onlineUsers[userId].forEach((socketId) => {
+                    io.to(socketId).emit("privateChat", rows);
+                });
+            }
+        );
+    });
+
     socket.on("messageSent", ({ message }) => {
         db.createMessage({ user_id: userId, message }).then(({ rows }) => {
             db.readMessage({ message_id: rows[0].id }).then(({ rows }) => {

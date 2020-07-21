@@ -151,6 +151,7 @@ exports.getLast10Messages = () => {
     const query = `SELECT users.first, users.last, users.image, chats.message, chats.created_at, chats.sender_id
                     FROM chats
                     LEFT JOIN users ON chats.sender_id = users.id
+                    WHERE receiver_id IS NULL
                     ORDER BY chats.created_at DESC
                     LIMIT 10`;
     return db.query(query);
@@ -160,6 +161,12 @@ exports.createMessage = ({ user_id, message }) => {
     const query = `INSERT INTO chats (sender_id, message) 
                    VALUES ($1, $2) RETURNING *;`;
     return db.query(query, [user_id, message]);
+};
+
+exports.createPrivateMessage = ({ user_id, message, friend_id }) => {
+    const query = `INSERT INTO chats (sender_id, message, receiver_id) 
+                   VALUES ($1, $2, $3) RETURNING *;`;
+    return db.query(query, [user_id, message, friend_id]);
 };
 
 exports.readMessage = ({ message_id }) => {
@@ -181,4 +188,13 @@ exports.getOnlineUsers = ({ online_users }) => {
                     FROM users 
                     WHERE id = ANY($1);`;
     return db.query(query, [online_users]);
+};
+
+exports.getPrivateMessages = ({ user_id, friend_id }) => {
+    const query = `SELECT users.first, users.last, users.image, chats.message, chats.created_at, chats.sender_id
+                    FROM chats
+                    LEFT JOIN users ON chats.sender_id = users.id
+                    WHERE (sender_id = $1 AND receiver_id = $2) OR (sender_id = $2 AND receiver_id = $1)
+                    ORDER BY chats.created_at DESC;`;
+    return db.query(query, [user_id, friend_id]);
 };

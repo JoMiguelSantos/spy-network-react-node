@@ -124,9 +124,9 @@ input {
 }
 
 .profile__image--update-btn {
-    margin: 0;
+    width: 12rem;
     font-size: 0.8rem;
-    font-family: "Montserrat Subrayada", sans-serif;
+    margin: 0 auto;
 }
 
 .profile__image--update-btn:hover {
@@ -193,6 +193,12 @@ input {
 .profile__bio--text {
     color: white;
     margin-right: 2rem;
+}
+
+.profile__delete-btn {
+    width: 12rem;
+    font-size: 0.8rem;
+    margin: 1rem auto;
 }
 
 .uploader__container {
@@ -332,6 +338,12 @@ input {
     width: 12rem;
     font-size: 0.8rem;
     margin: 0 auto;
+}
+
+.chat-btn {
+    width: 12rem;
+    font-size: 0.8rem;
+    margin: 1rem auto;
 }
 
 .chat__container {

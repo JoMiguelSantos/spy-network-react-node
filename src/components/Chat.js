@@ -5,9 +5,14 @@ import ProfilePic from "./Profile/ProfilePic";
 import { useHistory } from "react-router-dom";
 import OnlineUsers from "./OnlineUsers";
 
-export default function Chat() {
+export default function Chat({ isPrivate, privateMessages, friend_id }) {
     const elemRef = useRef();
-    const chatMessages = useSelector((state) => state && state.messages);
+    let chatMessages;
+    if (isPrivate) {
+        chatMessages = privateMessages;
+    } else {
+        chatMessages = useSelector((state) => state && state.messages);
+    }
     const history = useHistory();
 
     useEffect(() => {
@@ -18,15 +23,24 @@ export default function Chat() {
     const keyCheck = (e) => {
         if (e.key == "Enter") {
             e.preventDefault();
-            socket.emit("messageSent", { message: e.target.value });
+            if (isPrivate) {
+                socket.emit("privateChatMessage", {
+                    message: e.target.value,
+                    friend_id,
+                });
+            } else {
+                socket.emit("messageSent", { message: e.target.value });
+            }
             e.target.value = "";
         }
     };
 
     return (
         <div className="chat__container">
-            <h1 className="chat__title">Welcome to the Spy Chat</h1>
-            <OnlineUsers />
+            {!isPrivate && (
+                <h1 className="chat__title">Welcome to the Spy Chat</h1>
+            )}
+            {!isPrivate && <OnlineUsers />}
             <ul className="chat__messages--container" ref={elemRef}>
                 {chatMessages &&
                     chatMessages.map((message, index) => {
