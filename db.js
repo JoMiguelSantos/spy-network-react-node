@@ -179,7 +179,7 @@ exports.readMessage = ({ message_id }) => {
 
 exports.deleteChat = ({ user_id }) => {
     const query = `DELETE FROM chats 
-                    WHERE sender_id = $1`;
+                    WHERE sender_id = $1 OR receiver_id = $1`;
     return db.query(query, [user_id]);
 };
 
