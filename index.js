@@ -10,9 +10,7 @@ const { uploadFileS3, deleteFolderS3 } = require("./s3");
 const { uploader } = require("./multer");
 const { s3Url } = require("./config.json");
 const server = require("http").Server(app);
-const io = require("socket.io")(server, {
-    origins: "localhost:8080 spy-network.herokuapp.com",
-});
+const io = require("socket.io")(server);
 
 const { hashPassword, comparePassword } = require("./bc");
 const db = require("./db");
