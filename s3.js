@@ -43,40 +43,6 @@ exports.uploadFileS3 = (req, res, next) => {
         });
 };
 
-function emptyBucket(bucketName) {
-    let currentData;
-    let params = {
-        Bucket: bucketName,
-        Prefix: "folder/",
-    };
-
-    return S3.listObjects(params)
-        .promise()
-        .then((data) => {
-            if (data.Contents.length === 0) {
-                throw new Error("List of objects empty.");
-            }
-
-            currentData = data;
-
-            params = { Bucket: bucketName };
-            params.Delete = { Objects: [] };
-
-            currentData.Contents.forEach((content) => {
-                params.Delete.Objects.push({ Key: content.Key });
-            });
-
-            return S3.deleteObjects(params).promise();
-        })
-        .then(() => {
-            if (currentData.Contents.length === 1000) {
-                emptyBucket(bucketName, callback);
-            } else {
-                return true;
-            }
-        });
-}
-
 exports.deleteFolderS3 = (req, res, next) => {
     let currentData;
     let params = {
